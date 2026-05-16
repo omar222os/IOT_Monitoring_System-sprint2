@@ -1,0 +1,5 @@
+# Ignore real secrets
+secrets/*.txt
+
+# But DO track the safe templates!
+!secrets/*.example.txt
