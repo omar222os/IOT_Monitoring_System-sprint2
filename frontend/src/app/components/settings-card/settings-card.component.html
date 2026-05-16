@@ -1,0 +1,80 @@
+<div class="settings-card">
+
+  <!-- Header -->
+  <div class="card-header">
+    <div class="card-icon">
+      <lucide-icon *ngIf="icon" [img]="icon" size="20"></lucide-icon>
+    </div>
+    <div class="card-title-group">
+      <div class="card-title">{{ title }}</div>
+      <div class="card-subtitle">{{ subtitle }}</div>
+    </div>
+  </div>
+
+  <!-- Frequency -->
+  <div class="frequency-row">
+    <span class="freq-label">Polling frequency</span>
+    <div class="freq-control">
+      <input type="number" class="freq-input" [(ngModel)]="frequencyInput" (ngModelChange)="onFrequencyInputChange()" min="1" />
+      <span class="freq-unit">sec</span>
+      <button class="btn-freq-set" [disabled]="!frequencyDirty || frequencyInput < 1" (click)="onFrequencySave()">Set</button>
+    </div>
+  </div>
+
+  <!-- Sliders -->
+  <div class="sliders-row">
+    <div class="slider-panel" *ngFor="let s of sliderStates">
+      <div class="slider-header">
+        <span class="slider-label">{{ s.config.label }}</span>
+        <span class="slider-unit">{{ s.config.unit }}</span>
+      </div>
+
+      <div class="threshold-inputs">
+        <div class="threshold-input-group">
+          <label class="thresh-label">Min</label>
+          <input type="number" class="thresh-input" [class.error]="s.inputError" [(ngModel)]="s.lowInput" (ngModelChange)="onLowInputChange(s)" />
+        </div>
+        <div class="threshold-input-group">
+          <label class="thresh-label">Max</label>
+          <input type="number" class="thresh-input" [class.error]="s.inputError" [(ngModel)]="s.highInput" (ngModelChange)="onHighInputChange(s)" />
+        </div>
+      </div>
+      <div class="input-error" *ngIf="s.inputError">{{ s.inputError }}</div>
+
+      <ngx-slider
+        [(value)]="s.lowValue"
+        [(highValue)]="s.highValue"
+        [options]="s.options"
+        (userChange)="onSliderChange(s)"
+        (userChangeEnd)="onSliderChange(s)"
+      />
+      <div class="slider-alerts">
+        <span class="alerts-section-label">Alerts</span>
+        <label class="toggle-row">
+          <span class="alerts-label">&#8593; Above</span>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="s.alertAbove" (ngModelChange)="checkDirty()" />
+            <span class="toggle-track"></span>
+          </label>
+        </label>
+        <label class="toggle-row" *ngIf="s.lowValue > 0">
+          <span class="alerts-label">&#8595; Below</span>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="s.alertBelow" (ngModelChange)="checkDirty()" />
+            <span class="toggle-track"></span>
+          </label>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <button class="btn-reset" [disabled]="!isDirty || saving" (click)="reset()">Reset</button>
+    <button class="btn-save" [disabled]="!isDirty || saving || hasErrors" (click)="onSaveClick()">
+      {{ saving ? 'Saving…' : 'Save' }}
+    </button>
+  </div>
+
+</div>
+

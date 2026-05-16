@@ -1,0 +1,19 @@
+<div class="notif-card" [class.unread]="!notification.read" [class.warning]="notification.type === 'warning'" [class.critical]="notification.type === 'critical'" [class.info]="notification.type === 'info'">
+  <div class="unread-dot" *ngIf="!notification.read"></div>
+
+  <div class="notif-icon" [class.icon-alert]="isAlert" [class.icon-info]="!isAlert">
+    <lucide-icon *ngIf="isAlert" [img]="TriangleAlert" size="16"></lucide-icon>
+    <lucide-icon *ngIf="!isAlert" [img]="Check" size="16"></lucide-icon>
+  </div>
+
+  <div class="notif-body">
+    <div class="notif-title">
+      <span class="notif-category">{{ notification.category }}</span>
+      <span class="notif-dot-sep">·</span>
+      <span>{{ notification.title }}</span>
+    </div>
+    <div class="notif-meta">{{ notification.location }} · {{ timeAgo(notification.timestamp) }}</div>
+  </div>
+
+  <div class="notif-value" *ngIf="notification.value">{{ notification.value }}</div>
+</div>

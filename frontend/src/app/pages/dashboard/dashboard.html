@@ -1,0 +1,276 @@
+<div class="dashboard-layout">
+  <app-sidebar />
+  <main class="dashboard-content">
+
+    @if (!historyLoaded) {
+      <div class="history-loading">Loading sensor data&hellip;</div>
+    } @else {
+    @if (noHistoryError) {
+      <div class="no-history-error">{{ noHistoryError }}</div>
+    }
+    <!-- Traffic section -->
+    <div class="section-header">
+      <span class="section-title">Traffic</span>
+      <div class="section-sub">
+        <span class="section-sub-label">Congestion Level</span>
+        <div class="congestion-badge" [ngClass]="trafficCongestion">{{ trafficCongestionLabel }}</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Traffic Density -->
+      <div class="card-clickable" (click)="openDensityModal()">
+      <app-sensor-card
+        title="Traffic Density"
+        sensorId="SNS-TR-001"
+        [icon]="BusIcon"
+        valueLabel="Traffic Density"
+        unit="veh/min"
+        [initialValue]="initialDensity"
+        [minVal]="0"
+        [maxVal]="120"
+        [decimals]="0"
+        [rangeMin]="ranges['trafficDensity'].min"
+        [rangeMax]="ranges['trafficDensity'].max"
+        [initialHistory]="densityHistory"
+        [congestionThresholds]="densityCongestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedDensity"
+        (congestionChange)="onTrafficCongestion(0, $event)"
+      />
+      </div>
+
+      <!-- Avg Speed -->
+      <div class="card-clickable" (click)="openSpeedModal()">
+      <app-sensor-card
+        title="Average Speed"
+        sensorId="SNS-TR-002"
+        [icon]="BusIcon"
+        valueLabel="Avg Speed"
+        unit="km/h"
+        [initialValue]="initialSpeed"
+        [minVal]="5"
+        [maxVal]="130"
+        [decimals]="1"
+        [rangeMin]="ranges['avgSpeed'].min"
+        [rangeMax]="ranges['avgSpeed'].max"
+        [initialHistory]="speedHistory"
+        [congestionThresholds]="speedCongestion"
+        [invertCongestion]="true"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedSpeed"
+        (congestionChange)="onTrafficCongestion(1, $event)"
+      />
+      </div>
+
+    </div>
+
+    <!-- Air Pollution section -->
+    <div class="section-header">
+      <span class="section-title">Air Pollution</span>
+      <div class="section-sub">
+        <span class="section-sub-label">Pollution Level</span>
+        <div class="congestion-badge" [ngClass]="airPollutionLevel">{{ airPollutionLevelLabel }}</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+
+      <!-- CO -->
+      <div class="card-clickable" (click)="openCoModal()">
+      <app-sensor-card
+        title="Carbon Monoxide"
+        sensorId="SNS-AP-001"
+        [icon]="WindIcon"
+        valueLabel="CO Concentration"
+        unit="ppm"
+        [initialValue]="initialCo"
+        [minVal]="0"
+        [maxVal]="50"
+        [decimals]="1"
+        [rangeMin]="ranges['co'].min"
+        [rangeMax]="ranges['co'].max"
+        [initialHistory]="coHistory"
+        [congestionThresholds]="coCongestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedCo"
+        (congestionChange)="onAirCongestion(0, $event)"
+      />
+      </div>
+
+      <!-- Ozone -->
+      <div class="card-clickable" (click)="openOzoneModal()">
+      <app-sensor-card
+        title="Ozone"
+        sensorId="SNS-AP-002"
+        [icon]="WindIcon"
+        valueLabel="O₃ Concentration"
+        unit="ppb"
+        [initialValue]="initialOzone"
+        [minVal]="0"
+        [maxVal]="200"
+        [decimals]="0"
+        [rangeMin]="ranges['ozone'].min"
+        [rangeMax]="ranges['ozone'].max"
+        [initialHistory]="ozoneHistory"
+        [congestionThresholds]="ozoneCongestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedOzone"
+        (congestionChange)="onAirCongestion(1, $event)"
+      />
+      </div>
+
+      <!-- PM2.5 -->
+      <div class="card-clickable" (click)="openPm25Modal()">
+      <app-sensor-card
+        title="PM2.5"
+        sensorId="SNS-AP-003"
+        [icon]="WindIcon"
+        valueLabel="PM2.5 Concentration"
+        unit="µg/m³"
+        [initialValue]="initialPm25"
+        [minVal]="0"
+        [maxVal]="120"
+        [decimals]="1"
+        [rangeMin]="0"
+        [rangeMax]="120"
+        [initialHistory]="pm25History"
+        [congestionThresholds]="pm25Congestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedPm25"
+        [showStatus]="false"
+      />
+      </div>
+
+      <!-- PM10 -->
+      <div class="card-clickable" (click)="openPm10Modal()">
+      <app-sensor-card
+        title="PM10"
+        sensorId="SNS-AP-004"
+        [icon]="WindIcon"
+        valueLabel="PM10 Concentration"
+        unit="µg/m³"
+        [initialValue]="initialPm10"
+        [minVal]="0"
+        [maxVal]="200"
+        [decimals]="1"
+        [rangeMin]="0"
+        [rangeMax]="200"
+        [initialHistory]="pm10History"
+        [congestionThresholds]="pm10Congestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedPm10"
+        [showStatus]="false"
+      />
+      </div>
+
+      <!-- NO2 -->
+      <div class="card-clickable" (click)="openNo2Modal()">
+      <app-sensor-card
+        title="Nitrogen Dioxide"
+        sensorId="SNS-AP-005"
+        [icon]="WindIcon"
+        valueLabel="NO₂ Concentration"
+        unit="ppb"
+        [initialValue]="initialNo2"
+        [minVal]="0"
+        [maxVal]="150"
+        [decimals]="1"
+        [rangeMin]="0"
+        [rangeMax]="150"
+        [initialHistory]="no2History"
+        [congestionThresholds]="no2Congestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedNo2"
+        [showStatus]="false"
+      />
+      </div>
+
+      <!-- SO2 -->
+      <div class="card-clickable" (click)="openSo2Modal()">
+      <app-sensor-card
+        title="Sulfur Dioxide"
+        sensorId="SNS-AP-006"
+        [icon]="WindIcon"
+        valueLabel="SO₂ Concentration"
+        unit="ppb"
+        [initialValue]="initialSo2"
+        [minVal]="0"
+        [maxVal]="80"
+        [decimals]="1"
+        [rangeMin]="0"
+        [rangeMax]="80"
+        [initialHistory]="so2History"
+        [congestionThresholds]="so2Congestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedSo2"
+        [showStatus]="false"
+      />
+      </div>
+
+    </div>
+
+    <!-- Street Lights section -->
+    <div class="section-header">
+      <span class="section-title">Street Lights</span>
+      <div class="section-sub">
+        <span class="section-sub-label">Status</span>
+        <div class="onoff-badge" [ngClass]="streetLightsOn ? 'on' : 'off'">{{ streetLightsStatusLabel }}</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Brightness -->
+      <div class="card-clickable" (click)="openBrightnessModal()">
+      <app-sensor-card
+        title="Brightness"
+        sensorId="SNS-SL-001"
+        [icon]="LightbulbIcon"
+        valueLabel="Brightness Level"
+        unit="%"
+        [initialValue]="initialBrightness"
+        [minVal]="0"
+        [maxVal]="100"
+        [decimals]="0"
+        [rangeMin]="ranges['brightnessLevel'].min"
+        [rangeMax]="ranges['brightnessLevel'].max"
+        [initialHistory]="brightnessHistory"
+        [congestionThresholds]="brightnessCongestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedBrightness"
+        (valueChange)="onBrightnessValue($event)"
+      />
+      </div>
+
+      <!-- Power Consumption -->
+      <div class="card-clickable" (click)="openPowerModal()">
+      <app-sensor-card
+        title="Power Consumption"
+        sensorId="SNS-SL-002"
+        [icon]="LightbulbIcon"
+        valueLabel="Power Draw"
+        unit="W"
+        [initialValue]="initialPower"
+        [minVal]="0"
+        [maxVal]="300"
+        [decimals]="0"
+        [rangeMin]="ranges['powerConsumption'].min"
+        [rangeMax]="ranges['powerConsumption'].max"
+        [initialHistory]="powerHistory"
+        [congestionThresholds]="powerCongestion"
+        [pollIntervalMs]="pollMs"
+        [pushedValue]="pushedPower"
+      />
+      </div>
+
+    </div>
+    } <!-- end @if historyLoaded -->
+
+    @if (activeModal) {
+      <app-sensor-detail-modal
+        [data]="activeModal"
+        (close)="closeModal()"
+      />
+    }
+  </main>
+</div>
+

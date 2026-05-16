@@ -1,0 +1,39 @@
+<div class="settings-layout">
+  <app-sidebar />
+  <main class="settings-content">
+    @if (loading) {
+      <div class="loading-state">Loading settings…</div>
+    } @else {
+      <app-settings-card
+        title="Traffic"
+        subtitle="Sensors poll every 5 minutes"
+        [icon]="CarIcon"
+        [sliders]="trafficSliders"
+        [saving]="savingCard[0]"
+        [frequency]="frequencies['TRAFFIC']"
+        (saveClick)="onSaveCard('TRAFFIC', $event, 0)"
+        (frequencySave)="onFrequencySave('TRAFFIC', $event)"
+      />
+      <app-settings-card
+        title="Air Pollution"
+        subtitle="Air quality sensors poll every 10 minutes"
+        [icon]="WindIcon"
+        [sliders]="airPollutionSliders"
+        [saving]="savingCard[1]"
+        [frequency]="frequencies['AIR_POLLUTION']"
+        (saveClick)="onSaveCard('AIR_POLLUTION', $event, 1)"
+        (frequencySave)="onFrequencySave('AIR_POLLUTION', $event)"
+      />
+      <app-settings-card
+        title="Street Lights"
+        subtitle="Smart lighting control and monitoring"
+        [icon]="LightbulbIcon"
+        [sliders]="streetLightsSliders"
+        [saving]="savingCard[2]"
+        [frequency]="frequencies['STREET_LIGHT']"
+        (saveClick)="onSaveCard('STREET_LIGHT', $event, 2)"
+        (frequencySave)="onFrequencySave('STREET_LIGHT', $event)"
+      />
+    }
+  </main>
+</div>

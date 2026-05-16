@@ -1,0 +1,107 @@
+.toast-stack {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: stretch;
+  background: #23262f;
+  border: 1px solid #2a2d37;
+  border-radius: 12px;
+  min-width: 320px;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  pointer-events: all;
+  animation: slide-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toast.removing {
+  animation: slide-out 0.35s ease forwards;
+}
+
+@keyframes slide-in {
+  from { transform: translateY(-20px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+@keyframes slide-out {
+  from { transform: translateY(0);     opacity: 1; }
+  to   { transform: translateY(-20px); opacity: 0; }
+}
+
+/* Left accent bar */
+.toast-bar {
+  width: 4px;
+  flex-shrink: 0;
+}
+
+.toast.warning .toast-bar  { background-color: #fbbf24; }
+.toast.critical .toast-bar { background-color: #f87171; }
+.toast.info .toast-bar     { background-color: #8771c5; }
+
+/* Body */
+.toast-body {
+  flex: 1;
+  padding: 12px 12px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.toast.warning .toast-dot  { background-color: #fbbf24; }
+.toast.critical .toast-dot { background-color: #f87171; }
+.toast.info .toast-dot     { background-color: #8771c5; }
+
+.toast-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.toast-message {
+  font-size: 12px;
+  color: #a8aebd;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Close button */
+.toast-close {
+  background: none;
+  border: none;
+  color: #4e4568;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 8px 12px 8px 4px;
+  align-self: flex-start;
+  line-height: 1;
+  margin-top: 10px;
+  transition: color 0.15s;
+}
+
+.toast-close:hover {
+  color: #ffffff;
+}

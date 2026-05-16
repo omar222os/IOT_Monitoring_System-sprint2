@@ -1,0 +1,100 @@
+<div class="signup-wrapper">
+
+  <!-- Left Panel -->
+  <div class="left-panel">
+    <div class="left-content">
+      <h1>Real-Time Sensor Intelligence</h1>
+      <p>Experience the future of enterprise monitoring with precision tracking and automated analytics for every connected node in your ecosystem.</p>
+      <div class="divider"></div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+
+      <h2>Create Your Account</h2>
+      <p class="subtitle">Join the network and start monitoring your fleet today.</p>
+
+      <!-- PROFILE PICTURE -->
+      <div class="field-group">
+        <label class="field-label">PROFILE PICTURE</label>
+        <div class="profile-picture-row">
+          <div class="avatar-preview">
+            <img *ngIf="profilePicturePreview" [src]="profilePicturePreview" alt="Profile Picture">
+            <svg *ngIf="!profilePicturePreview" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#aaa" width="36" height="36">
+              <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+            </svg>
+          </div>
+          <div class="url-input-wrapper">
+            <label class="upload-btn" [class.uploading]="pictureUploading">
+              {{ pictureUploading ? 'Uploading…' : 'Choose File' }}
+              <input type="file" accept="image/*" (change)="onFileSelected($event)" [disabled]="pictureUploading" hidden>
+            </label>
+            <span class="upload-error" *ngIf="pictureUploadError">{{ pictureUploadError }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIRST NAME + LAST NAME -->
+      <div class="name-row">
+        <div class="field-group half">
+          <label class="field-label">FIRST NAME</label>
+          <input type="text" placeholder="John" formControlName="firstName">
+          <div class="error" *ngIf="signupForm.get('firstName')?.touched && signupForm.get('firstName')?.invalid">Required</div>
+        </div>
+        <div class="field-group half">
+          <label class="field-label">LAST NAME</label>
+          <input type="text" placeholder="Doe" formControlName="lastName">
+          <div class="error" *ngIf="signupForm.get('lastName')?.touched && signupForm.get('lastName')?.invalid">Required</div>
+        </div>
+      </div>
+
+      <!-- OPERATOR EMAIL -->
+      <div class="field-group">
+        <label class="field-label">OPERATOR EMAIL</label>
+        <div class="input-wrapper">
+          <input type="email" placeholder="operator@enterprise.com" formControlName="email">
+        </div>
+        <div class="error" *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid">Please enter a valid email</div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="field-group">
+        <label class="field-label">PASSWORD</label>
+        <div class="input-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" formControlName="password">
+          <button type="button" class="eye-btn" (click)="showPassword = !showPassword">
+            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <div class="error" *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid">Min 6 characters required</div>
+      </div>
+
+      <!-- CONFIRM PASSWORD -->
+      <div class="field-group">
+        <label class="field-label">CONFIRM PASSWORD</label>
+        <div class="input-wrapper">
+          <input [type]="showConfirmPassword ? 'text' : 'password'" placeholder="••••••••" formControlName="confirmPassword">
+          <button type="button" class="eye-btn" (click)="showConfirmPassword = !showConfirmPassword">
+            <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <div class="error" *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched">Passwords do not match</div>
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Creating Account…' : 'Create Account →' }}
+      </button>
+      <div class="error" *ngIf="submitError">{{ submitError }}</div>
+
+      <!-- LOGIN LINK -->
+      <p class="login-link">Already have an operator account? <a (click)="goToLogin()">Sign In to Dashboard</a></p>
+
+    </form>
+  </div>
+
+</div>

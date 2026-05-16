@@ -1,0 +1,17 @@
+<div class="toast-stack">
+  <div
+    *ngFor="let t of toasts"
+    class="toast"
+    [ngClass]="[t.type, t.removing ? 'removing' : '']"
+  >
+    <div class="toast-bar"></div>
+    <div class="toast-body">
+      <div class="toast-header">
+        <span class="toast-dot"></span>
+        <span class="toast-title">{{ t.title }}</span>
+      </div>
+      <p class="toast-message">{{ t.message }}</p>
+    </div>
+    <button class="toast-close" (click)="dismiss(t.id)">✕</button>
+  </div>
+</div>

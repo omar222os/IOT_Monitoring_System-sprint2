@@ -1,0 +1,48 @@
+<div class="sidebar">
+    <div class="company">
+        <div class="logo"></div>
+        <div class="company-info">
+            <div class="company-name">Sentry IoT</div>
+            <div class="tagline">Smart Monitoring System</div>
+        </div>
+    </div>
+
+    <nav class="nav-main">
+        <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+            <lucide-icon [img]="LayoutDashboard" size="18"></lucide-icon>
+            <span>Dashboard</span>
+        </a>
+        <a class="nav-item" routerLink="/notifications" routerLinkActive="active">
+            <lucide-icon [img]="Bell" size="18"></lucide-icon>
+            <span>Notifications</span>
+            <span class="badge" *ngIf="(notifService.unreadCount$ | async) as count">{{ count }}</span>
+        </a>
+    </nav>
+
+    <div class="nav-section-label">SETTINGS</div>
+
+    <nav class="nav-secondary">
+        <a class="nav-item" routerLink="/settings" routerLinkActive="active">
+            <lucide-icon [img]="Settings" size="18"></lucide-icon>
+            <span>Settings</span>
+        </a>
+        <a class="nav-item" routerLink="/profile" routerLinkActive="active">
+            <lucide-icon [img]="User" size="18"></lucide-icon>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <div class="user-footer" routerLink="/profile" style="cursor:pointer">
+        <div class="user-avatar">
+            <img *ngIf="userPicture; else initials" [src]="userPicture" alt="avatar" class="user-avatar-img">
+            <ng-template #initials>{{ userInitials }}</ng-template>
+        </div>
+        <div class="user-info">
+            <div class="user-name">{{ userName }}</div>
+            <div class="user-email">{{ userEmail }}</div>
+        </div>
+        <a class="logout-btn" (click)="logout()" title="Logout" style="cursor:pointer">
+            <lucide-icon [img]="LogOut" size="18"></lucide-icon>
+        </a>
+    </div>
+</div>

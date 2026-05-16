@@ -1,0 +1,113 @@
+<div class="modal-backdrop" (click)="close.emit()">
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <div class="modal-icon">
+          <lucide-icon [img]="data.icon" size="22" />
+        </div>
+        <div class="modal-title-text">
+          <div class="modal-title">{{ data.title }} &middot; {{ data.location }}</div>
+          <div class="modal-ids">{{ data.shortId }} &middot; {{ data.deviceId }}</div>
+        </div>
+      </div>
+      <button class="modal-close" (click)="close.emit()">
+        <lucide-icon [img]="XIcon" size="18" />
+      </button>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-wrap">
+      <svg #chartSvg width="100%" [attr.height]="CHART_H" class="modal-chart">
+        @if (svgPath) {
+          <path
+            [attr.d]="svgPath"
+            fill="none"
+            stroke="#a78bfa"
+            stroke-width="2"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+        }
+        @for (pt of chartPoints; track $index) {
+          <circle
+            [attr.cx]="pt.x"
+            [attr.cy]="pt.y"
+            [attr.r]="hoveredIndex === $index ? 7 : 4"
+            [attr.fill]="hoveredIndex === $index ? '#c4b5fd' : '#a78bfa'"
+            stroke="#1a1030"
+            stroke-width="2"
+            class="chart-dot"
+            (mouseenter)="onDotEnter($index)"
+            (mouseleave)="onDotLeave()"
+          />
+        }
+        <!-- Tooltip -->
+        @if (hoveredIndex !== null) {
+          <g>
+            <rect
+              [attr.x]="tooltipX(hoveredIndex)"
+              [attr.y]="tooltipY(hoveredIndex)"
+              width="155"
+              [attr.height]="22 + data.columns.length * 20"
+              rx="5"
+              fill="#120c1c"
+              stroke="#a78bfa"
+              stroke-width="1"
+            />
+            <text
+              [attr.x]="tooltipX(hoveredIndex) + 10"
+              [attr.y]="tooltipY(hoveredIndex) + 15"
+              fill="#c4b5fd"
+              font-size="10"
+              font-family="sans-serif"
+            >{{ timeAgo(data.rows[hoveredIndex].timestamp) }} ago</text>
+            @for (line of tooltipLines(hoveredIndex); track $index) {
+              <text
+                [attr.x]="tooltipX(hoveredIndex) + 10"
+                [attr.y]="tooltipY(hoveredIndex) + 33 + $index * 20"
+                fill="#e2e8f0"
+                font-size="12"
+                font-family="sans-serif"
+              >
+                <tspan font-weight="700">{{ line.value }}</tspan>
+                <tspan fill="#a0a0c0" dx="3">{{ line.unit }}</tspan>
+              </text>
+            }
+          </g>
+        }
+      </svg>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th>UPDATED</th>
+            @for (col of data.columns; track col.key) {
+              <th>{{ col.label }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of tableRows; track row.rowNum) {
+            <tr>
+              <td class="col-num">{{ row.rowNum.toString().padStart(2, '0') }}</td>
+              <td class="col-time">{{ timeAgo(row.item['timestamp']) }}</td>
+              @for (col of data.columns; track col.key) {
+                <td class="col-val">
+                  <strong>{{ (+row.item[col.key]).toFixed(col.decimals) }}</strong>
+                  <span class="val-unit"> {{ col.unit }}</span>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

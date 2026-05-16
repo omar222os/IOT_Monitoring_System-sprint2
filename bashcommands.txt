@@ -1,0 +1,7 @@
+chmod +x bash.sh   # only needed once
+
+./bash.sh setup    # first time — creates secrets
+./bash.sh start    # start everything
+./bash.sh logs     # watch logs
+./bash.sh stop     # stop everything
+./bash.sh clean    # nuclear option — wipes all data

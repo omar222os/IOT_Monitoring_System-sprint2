@@ -1,0 +1,28 @@
+# ──────────────────────────────────────────
+# Node Dependencies & Angular Caches
+# ──────────────────────────────────────────
+node_modules/
+.angular/
+dist/
+out-tsc/
+
+# ──────────────────────────────────────────
+# Version Control
+# ──────────────────────────────────────────
+.git/
+.gitignore
+
+# ──────────────────────────────────────────
+# IDE, Editor, & Formatting Files
+# ──────────────────────────────────────────
+.vscode/
+.editorconfig
+.prettierrc
+README.md
+
+# ──────────────────────────────────────────
+# Docker Files
+# ──────────────────────────────────────────
+*.Dockerfile
+.dockerignore
+docker-compose.yml

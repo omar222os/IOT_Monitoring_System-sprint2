@@ -1,0 +1,44 @@
+<div class="sensor-card">
+
+  <!-- Header -->
+  <div class="card-header">
+    <div class="card-icon">
+      <lucide-icon *ngIf="icon" [img]="icon" size="18"></lucide-icon>
+    </div>
+    <div class="card-meta">
+      <div class="card-title">{{ title }}</div>
+      <div class="card-sensor-id" *ngIf="sensorId">{{ sensorId }}</div>
+    </div>
+  </div>
+
+  <!-- Readings -->
+  <div class="readings">
+    <div class="reading-row">
+      <span class="reading-label">{{ valueLabel }}</span>
+      <span class="reading-value">
+        <strong>{{ liveValue }}</strong>
+        <span class="reading-unit">&nbsp;{{ unit }}</span>
+      </span>
+    </div>
+    <div class="reading-row" *ngIf="showStatus">
+      <span class="reading-label">Status</span>
+      <span class="range-status" [ngClass]="rangeStatus">{{ rangeStatusLabel }}</span>
+    </div>
+  </div>
+
+  <!-- Sparkline chart -->
+  <div class="chart-area" *ngIf="livePoints.length">
+    <svg [attr.viewBox]="'-6 -6 ' + (chartWidth + 12) + ' 76'" preserveAspectRatio="none">
+      <g [style.transform]="svgGroupTransform" [style.transition]="svgGroupTransition">
+        <path [attr.d]="svgPath" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+        <circle [attr.cx]="lastDotX" [attr.cy]="lastDotY" r="4" fill="#a78bfa" />
+      </g>
+    </svg>
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <span class="footer-text">Updated {{ updatedAgoText }}</span>
+  </div>
+
+</div>

@@ -1,0 +1,38 @@
+<div class="notif-layout">
+  <app-sidebar />
+  <main class="notif-content">
+    <div class="notif-header">
+      <div>
+        <h1 class="notif-title">Notifications</h1>
+        <p class="notif-subtitle">Recent threshold crossings and system events.</p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="notifService.notifications$ | async as notifications">
+      <div class="notif-toolbar" *ngIf="notifications.length > 0">
+        <span class="notif-count">
+          {{ notifications.length }}
+          <span class="notif-unread" *ngIf="(notifService.unreadCount$ | async) as unread">
+            <ng-container *ngIf="unread > 0">· {{ unread }} unread</ng-container>
+          </span>
+        </span>
+        <div class="notif-actions">
+          <button class="btn-action" (click)="notifService.markAllAsRead()">
+            ✓ Mark all as read
+          </button>
+        </div>
+      </div>
+
+      <div class="notif-list" *ngIf="notifications.length > 0; else empty">
+        <app-notification-card
+          *ngFor="let n of notifications; trackBy: trackById"
+          [notification]="n"
+        />
+      </div>
+
+      <ng-template #empty>
+        <div class="notif-empty">No notifications yet.</div>
+      </ng-template>
+    </ng-container>
+  </main>
+</div>
