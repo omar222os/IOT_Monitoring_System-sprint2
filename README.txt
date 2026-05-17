@@ -1,6 +1,3 @@
-```markdown
-# IoT Monitoring System
-
 A full-stack IoT monitoring platform built with Angular, Spring Boot, and MySQL,
 containerized with Docker.
 
