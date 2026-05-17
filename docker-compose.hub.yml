@@ -8,7 +8,7 @@ services:
   # MySQL Database
   # ──────────────────────────────────────────
   database:
-    image: somefreebie/iot-database:latest  
+    image: somefreebie/iot-database:v1.4
     container_name: iot-database
 
     environment:
@@ -39,7 +39,7 @@ services:
   # Spring Boot Backend
   # ──────────────────────────────────────────
   backend:
-    image: somefreebie/iot-backend:latest
+    image: somefreebie/iot-backend:v1.4
     container_name: backend-container
 
     # Use an entrypoint wrapper to read the secret file and export it
@@ -50,9 +50,9 @@ services:
        exec java -Djava.security.egd=file:/dev/./urandom -jar app.jar"    ]
 
     environment:
-      SIMULATOR_BASE_URL: http://localhost:8080
+      # SIMULATOR_BASE_URL: http://localhost:8080
       JWT_EXPIRATION_MS: 86400000
-
+      
 
 
     secrets:
@@ -90,7 +90,7 @@ services:
   # Angular Frontend (served by nginx)
   # ──────────────────────────────────────────
   frontend:
-    image: omarhsn/iot-frontend:latest
+    image: somefreebie/iot-frontend:v1.4
     container_name: iot-frontend
 
     networks:
