@@ -1,7 +1,3 @@
-## `README.md`
-
-The README is the first thing anyone sees on the repo. It should answer: *what is this, how do I run it, and how does it work.*
-
 ```markdown
 # IoT Monitoring System
 
