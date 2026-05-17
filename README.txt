@@ -39,7 +39,7 @@ Iot-project/
 ### 1. Clone the repository
 ```bash
 git clone <repo-url>
-cd Iot-project
+cd IOT_Monitoring_System-sprint2
 ```
 
 ### 2. Run setup (first time only)
@@ -76,9 +76,6 @@ chmod +x bash.sh
 | Variable | Service | Description |
 |---|---|---|
 | `MYSQL_DATABASE` | database | Database name |
-| `SPRING_DATASOURCE_URL` | backend | JDBC connection string |
-| `SPRING_DATASOURCE_USERNAME` | backend | Database user |
-| `SPRING_JPA_HIBERNATE_DDL_AUTO` | backend | Schema validation mode |
 | `JWT_EXPIRATION_MS` | backend | Token validity in ms (default: 24h) |
 
 ## Secrets
