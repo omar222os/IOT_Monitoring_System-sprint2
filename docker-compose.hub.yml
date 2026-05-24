@@ -21,12 +21,13 @@ services:
     image: jaidazeidan/iot-backend:v1.7
     platform: linux/amd64
     container_name: backend-container
-    environment:
-      JWT_EXPIRATION_MS: 86400000
-      SPRING_DATASOURCE_URL: jdbc:mysql://iot-database:3306/monitoring
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: rootpassword123
-      JWT_SECRET: myjwtsecretkey123456789012345678
+   environment:
+  JWT_EXPIRATION_MS: 86400000
+  SPRING_DATASOURCE_URL: jdbc:mysql://iot-database:3306/monitoring
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: rootpassword123
+  JWT_SECRET: myjwtsecretkey123456789012345678
+  CORS_ALLOWED_ORIGINS: http://localhost
     volumes:
       - backend_data:/app/data
     networks:
