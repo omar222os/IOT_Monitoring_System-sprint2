@@ -28,6 +28,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: rootpassword123
       JWT_SECRET: myjwtsecretkey123456789012345678
       CORS_ALLOWED_ORIGINS: http://localhost
+      SIMULATOR_BASE_URL: http://localhost:8080
     volumes:
       - backend_data:/app/data
     networks:
