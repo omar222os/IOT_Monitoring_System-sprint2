@@ -18,12 +18,12 @@ services:
       retries: 5
 
   backend:
-    image: jaidazeidan/iot-backend:v1.12
+    image: jaidazeidan/iot-backend:v1.13
     platform: linux/amd64
     container_name: backend-container
     environment:
       JWT_EXPIRATION_MS: 86400000
-            SPRING_DATASOURCE_URL: jdbc:mysql://iot-database:3306/monitoring
+      SPRING_DATASOURCE_URL: jdbc:mysql://iot-database:3306/monitoring
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: rootpassword123
       JWT_SECRET: myjwtsecretkey123456789012345678
@@ -39,16 +39,16 @@ services:
     restart: unless-stopped
     user: "1001:1001"
     healthcheck:
-  test: ["CMD-SHELL", "curl --silent --output /dev/null http://127.0.0.1:8080/"]
-  interval: 15s
-  timeout: 10s
-  start_period: 90s
-  retries: 10
+      test: ["CMD-SHELL", "curl --silent --output /dev/null http://127.0.0.1:8080/"]
+      interval: 15s
+      timeout: 10s
+      start_period: 90s
+      retries: 10
     ports:
       - "8081:8080"
 
   frontend:
-    image: jaidazeidan/iot-frontend:v1.12
+    image: jaidazeidan/iot-frontend:v1.13
     platform: linux/amd64
     container_name: iot-frontend
     networks:
