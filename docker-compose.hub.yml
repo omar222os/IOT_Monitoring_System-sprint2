@@ -1,40 +1,32 @@
 services:
   database:
-    image: somefreebie/iot-database:v1.4
-    platform: linux/amd64
+    image: mysql:8.0
     container_name: iot-database
     environment:
       MYSQL_DATABASE: monitoring
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
-    secrets:
-      - mysql_root_password
+      MYSQL_ROOT_PASSWORD: rootpassword123
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - backend-net
     restart: unless-stopped
     healthcheck:
-      test: >
-        mysqladmin ping -h localhost -u root
-        --password="$$(cat /run/secrets/mysql_root_password)" --silent
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword123"]
       interval: 30s
       timeout: 5s
       start_period: 30s
       retries: 5
 
   backend:
-    image: jaidazeidan/iot-backend:v1.2
+    image: jaidazeidan/iot-backend:v1.4
     platform: linux/amd64
     container_name: backend-container
     entrypoint: ["/bin/sh", "-c",
-      "export SPRING_DATASOURCE_PASSWORD=$(cat /run/secrets/mysql_root_password) &&
-       export JWT_SECRET=$(cat /run/secrets/jwt_secret) &&
+      "export SPRING_DATASOURCE_PASSWORD=rootpassword123 &&
+       export JWT_SECRET=myjwtsecretkey123456789012345678 &&
        exec java -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
     environment:
       JWT_EXPIRATION_MS: 86400000
-    secrets:
-      - mysql_root_password
-      - jwt_secret
     volumes:
       - backend_data:/app/data
     networks:
@@ -55,7 +47,7 @@ services:
       - "8080:8080"
 
   frontend:
-    image: jaidazeidan/iot-frontend:v1.2
+    image: jaidazeidan/iot-frontend:v1.4
     platform: linux/amd64
     container_name: iot-frontend
     networks:
@@ -79,9 +71,3 @@ volumes:
     driver: local
   backend_data:
     driver: local
-
-secrets:
-  mysql_root_password:
-    file: ./secrets/mysql_root_password.txt
-  jwt_secret:
-    file: ./secrets/jwt_secret.txt
