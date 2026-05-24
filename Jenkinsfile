@@ -42,7 +42,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                sh "docker compose -f docker-compose.hub.yml up -d"
+                sh "docker-compose -f docker-compose.hub.yml up -d"
             }
         }
     }
