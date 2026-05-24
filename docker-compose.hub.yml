@@ -18,15 +18,15 @@ services:
       retries: 5
 
   backend:
-    image: jaidazeidan/iot-backend:v1.4
+    image: jaidazeidan/iot-backend:v1.7
     platform: linux/amd64
     container_name: backend-container
-    entrypoint: ["/bin/sh", "-c",
-      "export SPRING_DATASOURCE_PASSWORD=rootpassword123 &&
-       export JWT_SECRET=myjwtsecretkey123456789012345678 &&
-       exec java -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
     environment:
       JWT_EXPIRATION_MS: 86400000
+      SPRING_DATASOURCE_URL: jdbc:mysql://iot-database:3306/monitoring
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword123
+      JWT_SECRET: myjwtsecretkey123456789012345678
     volumes:
       - backend_data:/app/data
     networks:
@@ -41,13 +41,13 @@ services:
       test: ["CMD-SHELL", "curl --silent --output /dev/null http://127.0.0.1:8080/"]
       interval: 10s
       timeout: 5s
-      start_period: 15s
-      retries: 3
+      start_period: 30s
+      retries: 5
     ports:
       - "8081:8080"
 
   frontend:
-    image: jaidazeidan/iot-frontend:v1.4
+    image: jaidazeidan/iot-frontend:v1.7
     platform: linux/amd64
     container_name: iot-frontend
     networks:
