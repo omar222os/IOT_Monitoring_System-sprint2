@@ -1,12 +1,9 @@
 services:
   database:
-    image: mysql:8.0
+    image: jaidazeidan/iot-database:${IMAGE_VERSION}
     container_name: iot-database
     environment:
-      MYSQL_DATABASE: monitoring
       MYSQL_ROOT_PASSWORD: rootpassword123
-    volumes:
-      - mysql_data:/var/lib/mysql
     networks:
       - backend-net
     restart: unless-stopped
@@ -18,7 +15,7 @@ services:
       retries: 5
 
   backend:
-    image: jaidazeidan/iot-backend:v1.13
+    image: jaidazeidan/iot-backend:${IMAGE_VERSION}
     platform: linux/amd64
     container_name: backend-container
     environment:
@@ -28,9 +25,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: rootpassword123
       JWT_SECRET: myjwtsecretkey123456789012345678
       CORS_ALLOWED_ORIGINS: http://localhost
+      SENSOR_API_KEY: my-sensor-key-12345
       SIMULATOR_BASE_URL: http://localhost:8080
-    volumes:
-      - backend_data:/app/data
     networks:
       - backend-net
       - frontend-net
@@ -40,7 +36,7 @@ services:
     restart: unless-stopped
     user: "1001:1001"
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --output /dev/null http://127.0.0.1:8080/"]
+      test: ["CMD-SHELL", "curl --silent --output /dev/null http://127.0.0.1:8080/heartbeat"]
       interval: 15s
       timeout: 10s
       start_period: 90s
@@ -49,7 +45,7 @@ services:
       - "8081:8080"
 
   frontend:
-    image: jaidazeidan/iot-frontend:v1.13
+    image: jaidazeidan/iot-frontend:${IMAGE_VERSION}
     platform: linux/amd64
     container_name: iot-frontend
     networks:
@@ -70,6 +66,4 @@ networks:
 
 volumes:
   mysql_data:
-    driver: local
-  backend_data:
     driver: local
