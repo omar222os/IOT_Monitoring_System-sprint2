@@ -14,9 +14,10 @@ pipeline {
                 echo 'Pulling pipeline config from GitHub...'
                 checkout scm
                 echo 'Cloning backend (fix/arch-fixes)...'
-                sh 'rm -rf backend-repo && git clone -b fix/arch-fixes https://github.com/nabil0412/IoT-Monitoring-System-backend.git backend-repo'
-                echo 'Cloning frontend (main)...'
-                sh 'rm -rf frontend-repo && git clone https://github.com/nabil0412/IoT-Monitoring-System-frontend.git frontend-repo'
+                withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                    sh 'rm -rf backend-repo && git clone -b fix/arch-fixes https://$GH_USER:$GH_TOKEN@github.com/nabil0412/IoT-Monitoring-System-backend.git backend-repo'
+                    sh 'rm -rf frontend-repo && git clone https://$GH_USER:$GH_TOKEN@github.com/nabil0412/IoT-Monitoring-System-frontend.git frontend-repo'
+                }
             }
         }
 
