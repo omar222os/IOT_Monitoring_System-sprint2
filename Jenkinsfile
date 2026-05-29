@@ -11,16 +11,21 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Pulling code from GitHub...'
+                echo 'Pulling pipeline config from GitHub...'
                 checkout scm
+                echo 'Cloning backend (fix/arch-fixes)...'
+                sh 'rm -rf backend-repo && git clone -b fix/arch-fixes https://github.com/nabil0412/IoT-Monitoring-System-backend.git backend-repo'
+                echo 'Cloning frontend (main)...'
+                sh 'rm -rf frontend-repo && git clone https://github.com/nabil0412/IoT-Monitoring-System-frontend.git frontend-repo'
             }
         }
 
         stage('Build Images') {
             steps {
                 echo 'Building Docker images...'
-                sh "docker build -f backend/backend.Dockerfile -t ${DOCKER_HUB_USERNAME}/iot-backend:${IMAGE_VERSION} ./backend"
-                sh "docker build -f frontend/frontend.Dockerfile -t ${DOCKER_HUB_USERNAME}/iot-frontend:${IMAGE_VERSION} ./frontend"
+                sh "docker build -f backend-repo/backend.Dockerfile -t ${DOCKER_HUB_USERNAME}/iot-backend:${IMAGE_VERSION} ./backend-repo"
+                sh "docker build -f backend-repo/database.Dockerfile -t ${DOCKER_HUB_USERNAME}/iot-database:${IMAGE_VERSION} ./backend-repo"
+                sh "docker build -f frontend-repo/frontend.Dockerfile -t ${DOCKER_HUB_USERNAME}/iot-frontend:${IMAGE_VERSION} ./frontend-repo"
             }
         }
 
@@ -35,6 +40,7 @@ pipeline {
             steps {
                 echo 'Pushing images to Docker Hub...'
                 sh "docker push ${DOCKER_HUB_USERNAME}/iot-backend:${IMAGE_VERSION}"
+                sh "docker push ${DOCKER_HUB_USERNAME}/iot-database:${IMAGE_VERSION}"
                 sh "docker push ${DOCKER_HUB_USERNAME}/iot-frontend:${IMAGE_VERSION}"
             }
         }
@@ -42,7 +48,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                sh "docker-compose -f docker-compose.hub.yml up -d"
+                sh "IMAGE_VERSION=${IMAGE_VERSION} docker-compose -f docker-compose.hub.yml up -d"
             }
         }
     }
